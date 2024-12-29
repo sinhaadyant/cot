@@ -1,38 +1,88 @@
-.App {
+/* App.css */
+.app-container {
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.filter-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filter-label {
+  font-weight: normal;
+  margin-right: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.filter-select {
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: #fafafa;
+  color: #333;
+  transition: all 0.3s ease;
+  margin: 0 10px;
+}
+
+.filter-select:focus {
+  border-color: #6200ea;
+  outline: none;
+  box-shadow: 0 0 5px rgba(98, 0, 234, 0.5);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.MuiTableCell-root {
+  text-align: center;
+  padding: 8px;
+  border: 1px solid #ddd;
+  font-size: 17px; /* Updated font size to 17px for <td> */
+}
+
+.MuiTableHead-root {
+  background-color: #f5f5f5;
+}
+
+.MuiTableHead-root th {
+  font-weight: bold;
+  color: #333;
+}
+
+.loading-spinner {
+  display: block;
+  margin: 20px auto;
+}
+
+.load-more-container {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.load-more-button {
+  background-color: #6200ea;
   color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: none;
+  transition: background-color 0.3s ease;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.load-more-button:hover {
+  background-color: #3700b3;
 }
