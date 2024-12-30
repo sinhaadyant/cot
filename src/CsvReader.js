@@ -20,7 +20,12 @@ export const filterOptions = {
     "GOLD - COMMODITY EXCHANGE INC.",
     "SILVER - COMMODITY EXCHANGE INC.",
   ],
-  crypto: ["BITCOIN - CHICAGO MERCANTILE EXCHANGE"],
+  crypto: [
+    "BITCOIN - CHICAGO MERCANTILE EXCHANGE",
+    "MICRO BITCOIN - CHICAGO MERCANTILE EXCHANGE",
+    "ETHER CASH SETTLED - CHICAGO MERCANTILE EXCHANGE",
+    "MICRO ETHER - CHICAGO MERCANTILE EXCHANGE"
+  ],
   currencies: [
     "AUSTRALIAN DOLLAR - CHICAGO MERCANTILE EXCHANGE",
     "BRITISH POUND - CHICAGO MERCANTILE EXCHANGE",
@@ -34,6 +39,27 @@ export const filterOptions = {
     "BRAZILIAN REAL - CHICAGO MERCANTILE EXCHANGE",
     "SO AFRICAN RAND - CHICAGO MERCANTILE EXCHANGE",
   ],
+  indexes : [
+    "S&P 500 Consolidated - CHICAGO MERCANTILE EXCHANGE",
+    "NASDAQ MINI - CHICAGO MERCANTILE EXCHANGE",
+    "DJIA x $5 - CHICAGO BOARD OF TRADE",
+    "RUSSELL E-MINI - CHICAGO MERCANTILE EXCHANGE",
+    "E-MINI S&P 400 STOCK INDEX - CHICAGO MERCANTILE EXCHANGE",
+    "E-MINI S&P 500 - CHICAGO MERCANTILE EXCHANGE",
+    "VIX FUTURES - CBOE FUTURES EXCHANGE"
+  ],
+  Energies : [
+    "WTI-PHYSICAL - NEW YORK MERCANTILE EXCHANGE",
+    "GASOLINE RBOB - NEW YORK MERCANTILE EXCHANGE",
+    "NY HARBOR ULSD - NEW YORK MERCANTILE EXCHANGE",
+    "NAT GAS NYME - NEW YORK MERCANTILE EXCHANGE"
+  ],
+  Treasuries : [
+    "FED FUNDS - CHICAGO BOARD OF TRADE",
+    "UST 2Y NOTE - CHICAGO BOARD OF TRADE",
+    "UST 5Y NOTE - CHICAGO BOARD OF TRADE",
+    "UST 10Y NOTE - CHICAGO BOARD OF TRADE"
+  ]
 };
 
 const App = () => {
@@ -119,7 +145,7 @@ const App = () => {
         shadow={true}
       />
 
-      <h1>Exchange Data</h1>
+      <h2 style={{textAlign:"center"}}>Exchange Data  {selectedSubCategory && ` - ${selectedSubCategory}`}</h2>
 
       <div className="filter-container">
         <div className="filter-group">
@@ -193,7 +219,7 @@ const App = () => {
 
       {data.length > 0 && (
         <>
-          <Table className="data-table">
+          <Table className="data-table responsive-table-container">
             <TableHead>
               <TableRow>
                 <TableCell>Date</TableCell>
