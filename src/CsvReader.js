@@ -217,187 +217,251 @@ const App = () => {
             </TableHead>
             <TableBody>
               {data.map((row, index) => (
-                <TableRow key={index}>
-                  {/* Report Date */}
-                  <TableCell className="custom-table-cell">
-                    {row?.report_date_as_yyyy_mm_dd
-                      ? new Date(
-                          row?.report_date_as_yyyy_mm_dd
-                        ).toLocaleDateString("en-CA")
-                      : ""}
-                  </TableCell>
+                <React.Fragment key={index}>
+                  {/* First Row: Data */}
+                  <TableRow>
+                    {/* Date for Each Record */}
+                    <TableCell rowSpan={2} className="custom-table-cell">
+                      {row?.report_date_as_yyyy_mm_dd
+                        ? new Date(
+                            row.report_date_as_yyyy_mm_dd
+                          ).toLocaleDateString("en-CA")
+                        : ""}
+                    </TableCell>
 
-                  {/* Non-Comm Positions Long */}
-                  <TableCell
-                    style={{
-                      backgroundColor:
-                        row?.change_in_noncomm_long_all > 1
-                          ? "#67bd90"
-                          : row?.change_in_noncomm_long_all < 0
-                          ? "#f18682"
-                          : "transparent",
-                    }}
-                    className="custom-table-cell"
-                  >
-                    {row?.noncomm_positions_long_all
-                      ? `${new Intl.NumberFormat("en-US").format(
-                          row.noncomm_positions_long_all
-                        )} (${row?.pct_of_oi_noncomm_long_all ?? 0}%)`
-                      : ""}
-                  </TableCell>
+                    {/* Data Values */}
+                    <TableCell className="custom-table-cell">
+                      {row?.noncomm_positions_long_all
+                        ? new Intl.NumberFormat("en-US").format(
+                            row.noncomm_positions_long_all
+                          )
+                        : ""}
+                    </TableCell>
+                    <TableCell className="custom-table-cell">
+                      {row?.noncomm_positions_short_all
+                        ? new Intl.NumberFormat("en-US").format(
+                            row.noncomm_positions_short_all
+                          )
+                        : ""}
+                    </TableCell>
+                    <TableCell className="custom-table-cell">
+                      {row?.noncomm_postions_spread_all
+                        ? new Intl.NumberFormat("en-US").format(
+                            row.noncomm_postions_spread_all
+                          )
+                        : ""}
+                    </TableCell>
+                    <TableCell className="custom-table-cell">
+                      {row?.comm_positions_long_all
+                        ? new Intl.NumberFormat("en-US").format(
+                            row.comm_positions_long_all
+                          )
+                        : ""}
+                    </TableCell>
+                    <TableCell className="custom-table-cell">
+                      {row?.comm_positions_short_all
+                        ? new Intl.NumberFormat("en-US").format(
+                            row.comm_positions_short_all
+                          )
+                        : ""}
+                    </TableCell>
+                    {/* Total Reportable Positions Long */}
+                    <TableCell className="custom-table-cell">
+                      {row?.tot_rept_positions_long_all
+                        ? `${new Intl.NumberFormat("en-US").format(
+                            row.tot_rept_positions_long_all
+                          )}  `
+                        : ""}
+                    </TableCell>
 
-                  {/* Non-Comm Positions Short */}
-                  <TableCell
-                    style={{
-                      backgroundColor:
-                        row?.change_in_noncomm_short_all > 1
-                          ? "#67bd90"
-                          : row?.change_in_noncomm_short_all < 0
-                          ? "#f18682"
-                          : "transparent",
-                    }}
-                    className="custom-table-cell"
-                  >
-                    {row?.noncomm_positions_short_all
-                      ? `${new Intl.NumberFormat("en-US").format(
-                          row.noncomm_positions_short_all
-                        )} (${row?.pct_of_oi_noncomm_short_all ?? 0}%)`
-                      : ""}
-                  </TableCell>
+                    {/* Total Reportable Positions Short */}
+                    <TableCell className="custom-table-cell">
+                      {row?.tot_rept_positions_short
+                        ? `${new Intl.NumberFormat("en-US").format(
+                            row.tot_rept_positions_short
+                          )}  `
+                        : ""}
+                    </TableCell>
 
-                  {/* Non-Comm Spread */}
-                  <TableCell
-                    style={{
-                      backgroundColor:
-                        row?.change_in_noncomm_spead_all > 1
-                          ? "#67bd90"
-                          : row?.change_in_noncomm_spead_all < 0
-                          ? "#f18682"
-                          : "transparent",
-                    }}
-                    className="custom-table-cell"
-                  >
-                    {row?.noncomm_postions_spread_all
-                      ? `${new Intl.NumberFormat("en-US").format(
-                          row.noncomm_postions_spread_all
-                        )} (${row?.pct_of_oi_noncomm_spread ?? 0}%)`
-                      : ""}
-                  </TableCell>
+                    {/* Non-Reportable Positions Long */}
+                    <TableCell className="custom-table-cell">
+                      {row?.nonrept_positions_long_all
+                        ? `${new Intl.NumberFormat("en-US").format(
+                            row.nonrept_positions_long_all
+                          )} `
+                        : ""}
+                    </TableCell>
 
-                  {/* Comm Positions Long */}
-                  <TableCell
-                    style={{
-                      backgroundColor:
-                        row?.change_in_comm_long_all > 1
-                          ? "#67bd90"
-                          : row?.change_in_comm_long_all < 0
-                          ? "#f18682"
-                          : "transparent",
-                    }}
-                    className="custom-table-cell"
-                  >
-                    {row?.comm_positions_long_all
-                      ? `${new Intl.NumberFormat("en-US").format(
-                          row.comm_positions_long_all
-                        )} (${row?.pct_of_oi_comm_long_all ?? 0}%)`
-                      : ""}
-                  </TableCell>
+                    {/* Non-Reportable Positions Short */}
+                    <TableCell
+                       
+                      className="custom-table-cell"
+                    >
+                      {row?.nonrept_positions_short_all
+                        ? `${new Intl.NumberFormat("en-US").format(
+                            row.nonrept_positions_short_all
+                          )}  `
+                        : ""}
+                    </TableCell>
+                  </TableRow>
 
-                  {/* Comm Positions Short */}
-                  <TableCell
-                    style={{
-                      backgroundColor:
-                        row?.change_in_comm_short_all > 1
-                          ? "#67bd90"
-                          : row?.change_in_comm_short_all < 0
-                          ? "#f18682"
-                          : "transparent",
-                    }}
-                    className="custom-table-cell"
-                  >
-                    {row?.comm_positions_short_all
-                      ? `${new Intl.NumberFormat("en-US").format(
-                          row.comm_positions_short_all
-                        )} (${row?.pct_of_oi_comm_short_all ?? 0}%)`
-                      : ""}
-                  </TableCell>
-
-                  {/* Total Reportable Positions Long */}
-                  <TableCell
-                    style={{
-                      backgroundColor:
-                        row?.change_in_tot_rept_long_all > 1
-                          ? "#67bd90"
-                          : row?.change_in_tot_rept_long_all < 0
-                          ? "#f18682"
-                          : "transparent",
-                    }}
-                    className="custom-table-cell"
-                  >
-                    {row?.tot_rept_positions_long_all
-                      ? `${new Intl.NumberFormat("en-US").format(
-                          row.tot_rept_positions_long_all
-                        )} (${row?.pct_of_oi_tot_rept_long_all ?? 0}%)`
-                      : ""}
-                  </TableCell>
-
-                  {/* Total Reportable Positions Short */}
-                  <TableCell
-                    style={{
-                      backgroundColor:
-                        row?.change_in_tot_rept_short > 1
-                          ? "#67bd90"
-                          : row?.change_in_tot_rept_short < 0
-                          ? "#f18682"
-                          : "transparent",
-                    }}
-                    className="custom-table-cell"
-                  >
-                    {row?.tot_rept_positions_short
-                      ? `${new Intl.NumberFormat("en-US").format(
-                          row.tot_rept_positions_short
-                        )} (${row?.pct_of_oi_tot_rept_short ?? 0}%)`
-                      : ""}
-                  </TableCell>
-
-                  {/* Non-Reportable Positions Long */}
-                  <TableCell
-                    style={{
-                      backgroundColor:
-                        row?.change_in_nonrept_long_all > 1
-                          ? "#67bd90"
-                          : row?.change_in_nonrept_long_all < 0
-                          ? "#f18682"
-                          : "transparent",
-                    }}
-                    className="custom-table-cell"
-                  >
-                    {row?.nonrept_positions_long_all
-                      ? `${new Intl.NumberFormat("en-US").format(
-                          row.nonrept_positions_long_all
-                        )} (${row?.pct_of_oi_nonrept_long_all ?? 0}%)`
-                      : ""}
-                  </TableCell>
-
-                  {/* Non-Reportable Positions Short */}
-                  <TableCell
-                    style={{
-                      backgroundColor:
-                        row?.change_in_nonrept_short_all > 1
-                          ? "#67bd90"
-                          : row?.change_in_nonrept_short_all < 0
-                          ? "#f18682"
-                          : "transparent",
-                    }}
-                    className="custom-table-cell"
-                  >
-                    {row?.nonrept_positions_short_all
-                      ? `${new Intl.NumberFormat("en-US").format(
-                          row.nonrept_positions_short_all
-                        )} (${row?.pct_of_oi_nonrept_short_all ?? 0}%)`
-                      : ""}
-                  </TableCell>
-                </TableRow>
+                  {/* Second Row: Change Values */}
+                  <TableRow>
+                    <TableCell
+                      style={{
+                        backgroundColor:
+                          row?.change_in_noncomm_long_all > 0
+                            ? "#67bd90"
+                            : row?.change_in_noncomm_long_all < 0
+                            ? "#f18682"
+                            : "transparent",
+                      }}
+                      className="custom-table-cell"
+                    >
+                      {row?.change_in_noncomm_long_all
+                        ? `${row.change_in_noncomm_long_all > 0 ? "+" : ""}${
+                            row.change_in_noncomm_long_all
+                          } (${row?.pct_of_oi_noncomm_long_all ?? 0}%)`
+                        : ""}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        backgroundColor:
+                          row?.change_in_noncomm_short_all > 0
+                            ? "#67bd90"
+                            : row?.change_in_noncomm_short_all < 0
+                            ? "#f18682"
+                            : "transparent",
+                      }}
+                      className="custom-table-cell"
+                    >
+                      {row?.change_in_noncomm_short_all
+                        ? `${row.change_in_noncomm_short_all > 0 ? "+" : ""}${
+                            row.change_in_noncomm_short_all
+                          } (${row?.pct_of_oi_noncomm_short_all ?? 0}%)`
+                        : ""}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        backgroundColor:
+                          row?.change_in_noncomm_spead_all > 0
+                            ? "#67bd90"
+                            : row?.change_in_noncomm_spead_all < 0
+                            ? "#f18682"
+                            : "transparent",
+                      }}
+                      className="custom-table-cell"
+                    >
+                      {row?.change_in_noncomm_spead_all
+                        ? `${row.change_in_noncomm_spead_all > 0 ? "+" : ""}${
+                            row.change_in_noncomm_spead_all
+                          } (${row?.pct_of_oi_noncomm_spread ?? 0}%)`
+                        : ""}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        backgroundColor:
+                          row?.change_in_comm_long_all > 0
+                            ? "#67bd90"
+                            : row?.change_in_comm_long_all < 0
+                            ? "#f18682"
+                            : "transparent",
+                      }}
+                      className="custom-table-cell"
+                    >
+                      {row?.change_in_comm_long_all
+                        ? `${row.change_in_comm_long_all > 0 ? "+" : ""}${
+                            row.change_in_comm_long_all
+                          } (${row?.pct_of_oi_comm_long_all ?? 0}%)`
+                        : ""}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        backgroundColor:
+                          row?.change_in_comm_short_all > 0
+                            ? "#67bd90"
+                            : row?.change_in_comm_short_all < 0
+                            ? "#f18682"
+                            : "transparent",
+                      }}
+                      className="custom-table-cell"
+                    >
+                      {row?.change_in_comm_short_all
+                        ? `${row.change_in_comm_short_all > 0 ? "+" : ""}${
+                            row.change_in_comm_short_all
+                          } (${row?.pct_of_oi_comm_short_all ?? 0}%)`
+                        : ""}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        backgroundColor:
+                          row?.change_in_tot_rept_long_all > 0
+                            ? "#67bd90"
+                            : row?.change_in_tot_rept_long_all < 0
+                            ? "#f18682"
+                            : "transparent",
+                      }}
+                      className="custom-table-cell"
+                    >
+                      {row?.change_in_tot_rept_long_all
+                        ? `${row.change_in_tot_rept_long_all > 0 ? "+" : ""}${
+                            row.change_in_tot_rept_long_all
+                          } (${row?.pct_of_oi_tot_rept_long_all ?? 0}%)`
+                        : ""}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        backgroundColor:
+                          row?.change_in_tot_rept_short > 0
+                            ? "#67bd90"
+                            : row?.change_in_tot_rept_short < 0
+                            ? "#f18682"
+                            : "transparent",
+                      }}
+                      className="custom-table-cell"
+                    >
+                      {row?.change_in_tot_rept_short
+                        ? `${row.change_in_tot_rept_short > 0 ? "+" : ""}${
+                            row.change_in_tot_rept_short
+                          } (${row?.pct_of_oi_tot_rept_short ?? 0}%)`
+                        : ""}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        backgroundColor:
+                          row?.change_in_nonrept_long_all > 0
+                            ? "#67bd90"
+                            : row?.change_in_nonrept_long_all < 0
+                            ? "#f18682"
+                            : "transparent",
+                      }}
+                      className="custom-table-cell"
+                    >
+                      {row?.change_in_nonrept_long_all
+                        ? `${row.change_in_nonrept_long_all > 0 ? "+" : ""}${
+                            row.change_in_nonrept_long_all
+                          } (${row?.pct_of_oi_nonrept_long_all ?? 0}%)`
+                        : ""}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        backgroundColor:
+                          row?.change_in_nonrept_short_all > 0
+                            ? "#67bd90"
+                            : row?.change_in_nonrept_short_all < 0
+                            ? "#f18682"
+                            : "transparent",
+                      }}
+                      className="custom-table-cell"
+                    >
+                      {row?.change_in_nonrept_short_all
+                        ? `${row.change_in_nonrept_short_all > 0 ? "+" : ""}${
+                            row.change_in_nonrept_short_all
+                          } (${row?.pct_of_oi_nonrept_short_all ?? 0}%)`
+                        : ""}
+                    </TableCell>
+                  </TableRow>
+                </React.Fragment>
               ))}
             </TableBody>
           </Table>
