@@ -112,7 +112,12 @@ const App = () => {
   return (
     <div className="app-container">
       {/* Top Loading Bar */}
-      <LoadingBar color="#CE93D8" ref={loadingBarRef} height={6} shadow={true} />
+      <LoadingBar
+        color="#CE93D8"
+        ref={loadingBarRef}
+        height={6}
+        shadow={true}
+      />
 
       <h1>Exchange Data</h1>
 
@@ -177,6 +182,8 @@ const App = () => {
               <MenuItem value={100}>100</MenuItem>
               <MenuItem value={200}>200</MenuItem>
               <MenuItem value={500}>500</MenuItem>
+              <MenuItem value={1000}>1000</MenuItem>
+              <MenuItem value={2000}>2000</MenuItem>
             </Select>
           </div>
         )}
@@ -211,6 +218,7 @@ const App = () => {
             <TableBody>
               {data.map((row, index) => (
                 <TableRow key={index}>
+                  {/* Report Date */}
                   <TableCell className="custom-table-cell">
                     {row?.report_date_as_yyyy_mm_dd
                       ? new Date(
@@ -218,67 +226,175 @@ const App = () => {
                         ).toLocaleDateString("en-CA")
                       : ""}
                   </TableCell>
-                  <TableCell className="custom-table-cell">
+
+                  {/* Non-Comm Positions Long */}
+                  <TableCell
+                    style={{
+                      backgroundColor:
+                        row?.change_in_noncomm_long_all > 1
+                          ? "#67bd90"
+                          : row?.change_in_noncomm_long_all < 0
+                          ? "#f18682"
+                          : "transparent",
+                    }}
+                    className="custom-table-cell"
+                  >
                     {row?.noncomm_positions_long_all
-                      ? new Intl.NumberFormat("en-US").format(
+                      ? `${new Intl.NumberFormat("en-US").format(
                           row.noncomm_positions_long_all
-                        )
+                        )} (${row?.pct_of_oi_noncomm_long_all ?? 0}%)`
                       : ""}
                   </TableCell>
-                  <TableCell className="custom-table-cell">
+
+                  {/* Non-Comm Positions Short */}
+                  <TableCell
+                    style={{
+                      backgroundColor:
+                        row?.change_in_noncomm_short_all > 1
+                          ? "#67bd90"
+                          : row?.change_in_noncomm_short_all < 0
+                          ? "#f18682"
+                          : "transparent",
+                    }}
+                    className="custom-table-cell"
+                  >
                     {row?.noncomm_positions_short_all
-                      ? new Intl.NumberFormat("en-US").format(
+                      ? `${new Intl.NumberFormat("en-US").format(
                           row.noncomm_positions_short_all
-                        )
+                        )} (${row?.pct_of_oi_noncomm_short_all ?? 0}%)`
                       : ""}
                   </TableCell>
-                  <TableCell className="custom-table-cell">
+
+                  {/* Non-Comm Spread */}
+                  <TableCell
+                    style={{
+                      backgroundColor:
+                        row?.change_in_noncomm_spead_all > 1
+                          ? "#67bd90"
+                          : row?.change_in_noncomm_spead_all < 0
+                          ? "#f18682"
+                          : "transparent",
+                    }}
+                    className="custom-table-cell"
+                  >
                     {row?.noncomm_postions_spread_all
-                      ? new Intl.NumberFormat("en-US").format(
+                      ? `${new Intl.NumberFormat("en-US").format(
                           row.noncomm_postions_spread_all
-                        )
+                        )} (${row?.pct_of_oi_noncomm_spread ?? 0}%)`
                       : ""}
                   </TableCell>
-                  <TableCell className="custom-table-cell">
+
+                  {/* Comm Positions Long */}
+                  <TableCell
+                    style={{
+                      backgroundColor:
+                        row?.change_in_comm_long_all > 1
+                          ? "#67bd90"
+                          : row?.change_in_comm_long_all < 0
+                          ? "#f18682"
+                          : "transparent",
+                    }}
+                    className="custom-table-cell"
+                  >
                     {row?.comm_positions_long_all
-                      ? new Intl.NumberFormat("en-US").format(
+                      ? `${new Intl.NumberFormat("en-US").format(
                           row.comm_positions_long_all
-                        )
+                        )} (${row?.pct_of_oi_comm_long_all ?? 0}%)`
                       : ""}
                   </TableCell>
-                  <TableCell className="custom-table-cell">
+
+                  {/* Comm Positions Short */}
+                  <TableCell
+                    style={{
+                      backgroundColor:
+                        row?.change_in_comm_short_all > 1
+                          ? "#67bd90"
+                          : row?.change_in_comm_short_all < 0
+                          ? "#f18682"
+                          : "transparent",
+                    }}
+                    className="custom-table-cell"
+                  >
                     {row?.comm_positions_short_all
-                      ? new Intl.NumberFormat("en-US").format(
+                      ? `${new Intl.NumberFormat("en-US").format(
                           row.comm_positions_short_all
-                        )
+                        )} (${row?.pct_of_oi_comm_short_all ?? 0}%)`
                       : ""}
                   </TableCell>
-                  <TableCell className="custom-table-cell">
+
+                  {/* Total Reportable Positions Long */}
+                  <TableCell
+                    style={{
+                      backgroundColor:
+                        row?.change_in_tot_rept_long_all > 1
+                          ? "#67bd90"
+                          : row?.change_in_tot_rept_long_all < 0
+                          ? "#f18682"
+                          : "transparent",
+                    }}
+                    className="custom-table-cell"
+                  >
                     {row?.tot_rept_positions_long_all
-                      ? new Intl.NumberFormat("en-US").format(
+                      ? `${new Intl.NumberFormat("en-US").format(
                           row.tot_rept_positions_long_all
-                        )
+                        )} (${row?.pct_of_oi_tot_rept_long_all ?? 0}%)`
                       : ""}
                   </TableCell>
-                  <TableCell className="custom-table-cell">
+
+                  {/* Total Reportable Positions Short */}
+                  <TableCell
+                    style={{
+                      backgroundColor:
+                        row?.change_in_tot_rept_short > 1
+                          ? "#67bd90"
+                          : row?.change_in_tot_rept_short < 0
+                          ? "#f18682"
+                          : "transparent",
+                    }}
+                    className="custom-table-cell"
+                  >
                     {row?.tot_rept_positions_short
-                      ? new Intl.NumberFormat("en-US").format(
+                      ? `${new Intl.NumberFormat("en-US").format(
                           row.tot_rept_positions_short
-                        )
+                        )} (${row?.pct_of_oi_tot_rept_short ?? 0}%)`
                       : ""}
                   </TableCell>
-                  <TableCell className="custom-table-cell">
+
+                  {/* Non-Reportable Positions Long */}
+                  <TableCell
+                    style={{
+                      backgroundColor:
+                        row?.change_in_nonrept_long_all > 1
+                          ? "#67bd90"
+                          : row?.change_in_nonrept_long_all < 0
+                          ? "#f18682"
+                          : "transparent",
+                    }}
+                    className="custom-table-cell"
+                  >
                     {row?.nonrept_positions_long_all
-                      ? new Intl.NumberFormat("en-US").format(
+                      ? `${new Intl.NumberFormat("en-US").format(
                           row.nonrept_positions_long_all
-                        )
+                        )} (${row?.pct_of_oi_nonrept_long_all ?? 0}%)`
                       : ""}
                   </TableCell>
-                  <TableCell className="custom-table-cell">
+
+                  {/* Non-Reportable Positions Short */}
+                  <TableCell
+                    style={{
+                      backgroundColor:
+                        row?.change_in_nonrept_short_all > 1
+                          ? "#67bd90"
+                          : row?.change_in_nonrept_short_all < 0
+                          ? "#f18682"
+                          : "transparent",
+                    }}
+                    className="custom-table-cell"
+                  >
                     {row?.nonrept_positions_short_all
-                      ? new Intl.NumberFormat("en-US").format(
+                      ? `${new Intl.NumberFormat("en-US").format(
                           row.nonrept_positions_short_all
-                        )
+                        )} (${row?.pct_of_oi_nonrept_short_all ?? 0}%)`
                       : ""}
                   </TableCell>
                 </TableRow>
