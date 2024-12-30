@@ -1,7 +1,6 @@
 /* App.css */
 .app-container {
-  padding: 20px;
-  font-family: 'Roboto', sans-serif;
+   font-family: 'Roboto', sans-serif;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -13,26 +12,28 @@ h1 {
 }
 
 .filter-container {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
 .filter-label {
   font-weight: normal;
-  margin-right: 10px;
-  font-size: 16px;
+  font-size: 14px;
   color: #333;
 }
 
 .filter-select {
-  padding: 10px 15px;
-  font-size: 16px;
+   font-size: 14px;
   border-radius: 5px;
   border: 1px solid #ddd;
   background-color: #fafafa;
   color: #333;
+  width: 100%;
+  max-width: 300px; /* Wide but compact */
   transition: all 0.3s ease;
-  margin: 0 10px;
 }
 
 .filter-select:focus {
@@ -41,6 +42,7 @@ h1 {
   box-shadow: 0 0 5px rgba(98, 0, 234, 0.5);
 }
 
+/* Table Styles */
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -50,9 +52,8 @@ h1 {
 
 .MuiTableCell-root {
   text-align: center;
-  padding: 8px;
   border: 1px solid #ddd;
-  font-size: 17px; /* Updated font size to 17px for <td> */
+  font-size: 17px;
 }
 
 .MuiTableHead-root {
@@ -64,11 +65,13 @@ h1 {
   color: #333;
 }
 
+/* Loading Spinner */
 .loading-spinner {
   display: block;
   margin: 20px auto;
 }
 
+/* Load More Button */
 .load-more-container {
   text-align: center;
 }
@@ -85,4 +88,107 @@ h1 {
 
 .load-more-button:hover {
   background-color: #3700b3;
+}
+
+/* Responsive Design */
+@media (min-width: 601px) {
+  .filter-container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px; /* Increase spacing between filters */
+  }
+
+  .filter-label {
+    text-align: left;
+    font-size: 16px;
+    margin-right: 5px;
+  }
+}
+
+@media (max-width: 600px) {
+  .app-container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .filter-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .filter-select {
+    font-size: 13px;
+    max-width: 100%; /* Full width on smaller screens */
+  }
+
+  .load-more-button {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+} 
+.css-sc8y68-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+  padding: 4px 8px !important; /* Minimal padding */
+  height: 30px !important;    /* Adjust height */
+  line-height: normal;        /* Ensure proper text alignment */
+}
+
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-label {
+  font-weight: bold;
+  min-width: 100px;
+}
+
+/* Make the Subcategory and Limit dropdowns 50% each */
+.subcategory-group,
+.limit-group {
+  flex: 1; /* Allow both to share equal space */
+  min-width: 0; /* Allow content to shrink if necessary */
+}
+
+/* Ensure they occupy 50% space each */
+.subcategory-group {
+  flex: 0 0 50%; /* Fixed 50% for subcategory */
+}
+
+.limit-group {
+  flex: 0 0 50%; /* Fixed 50% for limit */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .filter-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .filter-group {
+    flex: none;
+    width: 100%;
+  }
+
+  .subcategory-group,
+  .limit-group {
+    flex: none;
+    width: 100%;
+  }
 }

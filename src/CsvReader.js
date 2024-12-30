@@ -10,6 +10,9 @@ import {
   TableHead,
   TableRow,
   CircularProgress,
+  Container,
+  Typography,
+  Box,
 } from "@mui/material";
 import "./App.css"; // Import the custom CSS file
 
@@ -89,10 +92,12 @@ const App = () => {
     }
   };
 
-  const loadMore = () => {
-    const newLimit = limit + 5;
+  const handleLimitChange = (event) => {
+    const newLimit = parseInt(event.target.value, 10);
     setLimit(newLimit);
-    fetchData(selectedSubCategory, newLimit);
+    if (selectedSubCategory) {
+      fetchData(selectedSubCategory, newLimit); // Fetch data for the selected limit
+    }
   };
 
   useEffect(() => {
@@ -107,43 +112,71 @@ const App = () => {
       <h1>Exchange Data</h1>
 
       <div className="filter-container">
-        <label htmlFor="filter" className="filter-label">
-          Filter by Exchange:
-        </label>
-        <Select
-          id="filter"
-          value={selectedFilter}
-          onChange={handleFilterChange}
-          className="filter-select"
-        >
-          <MenuItem value="">Select Category</MenuItem>
-          <MenuItem value="commodity">Commodity</MenuItem>
-          <MenuItem value="crypto">Crypto</MenuItem>
-          <MenuItem value="currencies">Currencies</MenuItem>
-        </Select>
+  <div className="filter-group">
+    <label htmlFor="filter" className="filter-label">
+      Exchange:
+    </label>
+    <Select
+      value={selectedFilter}
+      onChange={handleFilterChange}
+      displayEmpty
+      style={{ width: "200px" }}
+    >
+      <MenuItem value="" disabled>
+        Select
+      </MenuItem>
+      {Object.keys(filterOptions).map((filter) => (
+        <MenuItem key={filter} value={filter}>
+          {filter.charAt(0).toUpperCase() + filter.slice(1)}
+        </MenuItem>
+      ))}
+    </Select>
+  </div>
 
-        {selectedFilter && (
-          <>
-            <label htmlFor="subCategory" className="filter-label">
-              Subcategory:
-            </label>
-            <Select
-              id="subCategory"
-              value={selectedSubCategory}
-              onChange={handleSubCategoryChange}
-              className="filter-select"
-              disabled={subCategoryOptions.length === 0}
-            >
-              <MenuItem value="">Select Subcategory</MenuItem>
-              {subCategoryOptions.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </Select>
-          </>
-        )}
-      </div>
+  {selectedFilter && (
+    <div className="filter-group">
+      <label htmlFor="subCategory" className="filter-label">
+        Subcategory:
+      </label>
+      <Select
+        id="subCategory"
+        value={selectedSubCategory}
+        onChange={handleSubCategoryChange}
+        style={{ width: "250px" }}
+      >
+        <MenuItem value="">Select Subcategory</MenuItem>
+        {subCategoryOptions.map((option) => (
+          <MenuItem key={option} value={option}>
+            {option}
+          </MenuItem>
+        ))}
+      </Select>
+    </div>
+  )}
+
+  {selectedSubCategory && (
+    <div className="filter-group">
+      <label htmlFor="limit" className="filter-label">
+        Limit:
+      </label>
+      <Select
+        id="limit"
+        value={limit}
+        onChange={handleLimitChange}
+        style={{ width: "200px" }}
+      >
+        <MenuItem value={5}>5</MenuItem>
+        <MenuItem value={10}>10</MenuItem>
+        <MenuItem value={20}>20</MenuItem>
+        <MenuItem value={50}>50</MenuItem>
+        <MenuItem value={100}>100</MenuItem>
+        <MenuItem value={200}>200</MenuItem>
+        <MenuItem value={500}>500</MenuItem>
+      </Select>
+    </div>
+  )}
+</div>
+
 
       {loading && <CircularProgress className="loading-spinner" />}
 
@@ -174,70 +207,70 @@ const App = () => {
             <TableBody>
               {data.map((row, index) => (
                 <TableRow key={index}>
-                  <TableCell>
+                  <TableCell className="custom-table-cell">
                     {row?.report_date_as_yyyy_mm_dd
                       ? new Date(
                           row?.report_date_as_yyyy_mm_dd
                         ).toLocaleDateString("en-CA")
                       : ""}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="custom-table-cell">
                     {row?.noncomm_positions_long_all
                       ? new Intl.NumberFormat("en-US").format(
                           row.noncomm_positions_long_all
                         )
                       : ""}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="custom-table-cell">
                     {row?.noncomm_positions_short_all
                       ? new Intl.NumberFormat("en-US").format(
                           row.noncomm_positions_short_all
                         )
                       : ""}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="custom-table-cell">
                     {row?.noncomm_postions_spread_all
                       ? new Intl.NumberFormat("en-US").format(
                           row.noncomm_postions_spread_all
                         )
                       : ""}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="custom-table-cell">
                     {row?.comm_positions_long_all
                       ? new Intl.NumberFormat("en-US").format(
                           row.comm_positions_long_all
                         )
                       : ""}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="custom-table-cell">
                     {row?.comm_positions_short_all
                       ? new Intl.NumberFormat("en-US").format(
                           row.comm_positions_short_all
                         )
                       : ""}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="custom-table-cell">
                     {row?.tot_rept_positions_long_all
                       ? new Intl.NumberFormat("en-US").format(
                           row.tot_rept_positions_long_all
                         )
                       : ""}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="custom-table-cell">
                     {row?.tot_rept_positions_short
                       ? new Intl.NumberFormat("en-US").format(
                           row.tot_rept_positions_short
                         )
                       : ""}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="custom-table-cell">
                     {row?.nonrept_positions_long_all
                       ? new Intl.NumberFormat("en-US").format(
                           row.nonrept_positions_long_all
                         )
                       : ""}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="custom-table-cell">
                     {row?.nonrept_positions_short_all
                       ? new Intl.NumberFormat("en-US").format(
                           row.nonrept_positions_short_all
@@ -248,21 +281,33 @@ const App = () => {
               ))}
             </TableBody>
           </Table>
-          <div className="load-more-container">
-            <Button
-              variant="contained"
-              onClick={loadMore}
-              className="load-more-button"
-            >
-              Load More
-            </Button>
-          </div>
         </>
       )}
 
       {selectedSubCategory && !loading && data.length === 0 && (
         <p>No data available for the selected filter.</p>
       )}
+
+      {/* Footer */}
+      <Box
+        sx={{
+          backgroundColor: "#f1f1f1",
+          textAlign: "center",
+          padding: "20px 0",
+          marginTop: "auto",
+        }}
+      >
+        <Typography variant="body2">
+          &copy; 2024 A2Alpha Tech. All rights reserved.{" "}
+          <a
+            href="https://a2alphatech.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Visit our website
+          </a>
+        </Typography>
+      </Box>
     </div>
   );
 };
