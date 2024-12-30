@@ -24,7 +24,7 @@ export const filterOptions = {
     "BITCOIN - CHICAGO MERCANTILE EXCHANGE",
     "MICRO BITCOIN - CHICAGO MERCANTILE EXCHANGE",
     "ETHER CASH SETTLED - CHICAGO MERCANTILE EXCHANGE",
-    "MICRO ETHER - CHICAGO MERCANTILE EXCHANGE"
+    "MICRO ETHER - CHICAGO MERCANTILE EXCHANGE",
   ],
   currencies: [
     "AUSTRALIAN DOLLAR - CHICAGO MERCANTILE EXCHANGE",
@@ -39,27 +39,27 @@ export const filterOptions = {
     "BRAZILIAN REAL - CHICAGO MERCANTILE EXCHANGE",
     "SO AFRICAN RAND - CHICAGO MERCANTILE EXCHANGE",
   ],
-  indexes : [
+  indexes: [
     "S&P 500 Consolidated - CHICAGO MERCANTILE EXCHANGE",
     "NASDAQ MINI - CHICAGO MERCANTILE EXCHANGE",
     "DJIA x $5 - CHICAGO BOARD OF TRADE",
     "RUSSELL E-MINI - CHICAGO MERCANTILE EXCHANGE",
     "E-MINI S&P 400 STOCK INDEX - CHICAGO MERCANTILE EXCHANGE",
     "E-MINI S&P 500 - CHICAGO MERCANTILE EXCHANGE",
-    "VIX FUTURES - CBOE FUTURES EXCHANGE"
+    "VIX FUTURES - CBOE FUTURES EXCHANGE",
   ],
-  Energies : [
+  Energies: [
     "WTI-PHYSICAL - NEW YORK MERCANTILE EXCHANGE",
     "GASOLINE RBOB - NEW YORK MERCANTILE EXCHANGE",
     "NY HARBOR ULSD - NEW YORK MERCANTILE EXCHANGE",
-    "NAT GAS NYME - NEW YORK MERCANTILE EXCHANGE"
+    "NAT GAS NYME - NEW YORK MERCANTILE EXCHANGE",
   ],
-  Treasuries : [
+  Treasuries: [
     "FED FUNDS - CHICAGO BOARD OF TRADE",
     "UST 2Y NOTE - CHICAGO BOARD OF TRADE",
     "UST 5Y NOTE - CHICAGO BOARD OF TRADE",
-    "UST 10Y NOTE - CHICAGO BOARD OF TRADE"
-  ]
+    "UST 10Y NOTE - CHICAGO BOARD OF TRADE",
+  ],
 };
 
 const App = () => {
@@ -145,7 +145,9 @@ const App = () => {
         shadow={true}
       />
 
-      <h2 style={{textAlign:"center"}}>Exchange Data  {selectedSubCategory && ` - ${selectedSubCategory}`}</h2>
+      <h2 style={{ textAlign: "center" }}>
+        Exchange Data {selectedSubCategory && ` - ${selectedSubCategory}`}
+      </h2>
 
       <div className="filter-container">
         <div className="filter-group">
@@ -244,10 +246,28 @@ const App = () => {
             <TableBody>
               {data.map((row, index) => (
                 <React.Fragment key={index}>
+                  {/* {index == 0 && (
+                    <TableRow style={{ backgroundColor: "#DCDCDC" }}>
+                      <TableCell colSpan={3} style={{ fontWeight: "bolder" }}>
+                        {row?.yyyy_report_week_ww}
+                      </TableCell>
+
+                      <TableCell colSpan={4} style={{ fontWeight: "bolder" }}>
+                        {row?.contract_units}
+                      </TableCell>
+                      <TableCell colSpan={3} style={{ fontWeight: "bolder" }}>
+                        Open Interest: {row?.open_interest_all}
+                      </TableCell>
+                    </TableRow>
+                  )} */}
                   {/* First Row: Data */}
                   <TableRow>
                     {/* Date for Each Record */}
-                    <TableCell rowSpan={2} className="custom-table-cell">
+
+                    <TableCell
+                      rowSpan={3}
+                      className="custom-table-cell date-cell"
+                    >
                       {row?.report_date_as_yyyy_mm_dd
                         ? new Date(
                             row.report_date_as_yyyy_mm_dd
@@ -256,35 +276,35 @@ const App = () => {
                     </TableCell>
 
                     {/* Data Values */}
-                    <TableCell className="custom-table-cell">
+                    <TableCell className="custom-table-cell border-top">
                       {row?.noncomm_positions_long_all
                         ? new Intl.NumberFormat("en-US").format(
                             row.noncomm_positions_long_all
                           )
                         : ""}
                     </TableCell>
-                    <TableCell className="custom-table-cell">
+                    <TableCell className="custom-table-cell border-top">
                       {row?.noncomm_positions_short_all
                         ? new Intl.NumberFormat("en-US").format(
                             row.noncomm_positions_short_all
                           )
                         : ""}
                     </TableCell>
-                    <TableCell className="custom-table-cell">
+                    <TableCell className="custom-table-cell border-top">
                       {row?.noncomm_postions_spread_all
                         ? new Intl.NumberFormat("en-US").format(
                             row.noncomm_postions_spread_all
                           )
                         : ""}
                     </TableCell>
-                    <TableCell className="custom-table-cell">
+                    <TableCell className="custom-table-cell border-top">
                       {row?.comm_positions_long_all
                         ? new Intl.NumberFormat("en-US").format(
                             row.comm_positions_long_all
                           )
                         : ""}
                     </TableCell>
-                    <TableCell className="custom-table-cell">
+                    <TableCell className="custom-table-cell border-top">
                       {row?.comm_positions_short_all
                         ? new Intl.NumberFormat("en-US").format(
                             row.comm_positions_short_all
@@ -292,7 +312,7 @@ const App = () => {
                         : ""}
                     </TableCell>
                     {/* Total Reportable Positions Long */}
-                    <TableCell className="custom-table-cell">
+                    <TableCell className="custom-table-cell border-top">
                       {row?.tot_rept_positions_long_all
                         ? `${new Intl.NumberFormat("en-US").format(
                             row.tot_rept_positions_long_all
@@ -301,7 +321,7 @@ const App = () => {
                     </TableCell>
 
                     {/* Total Reportable Positions Short */}
-                    <TableCell className="custom-table-cell">
+                    <TableCell className="custom-table-cell border-top">
                       {row?.tot_rept_positions_short
                         ? `${new Intl.NumberFormat("en-US").format(
                             row.tot_rept_positions_short
@@ -310,7 +330,7 @@ const App = () => {
                     </TableCell>
 
                     {/* Non-Reportable Positions Long */}
-                    <TableCell className="custom-table-cell">
+                    <TableCell className="custom-table-cell border-top">
                       {row?.nonrept_positions_long_all
                         ? `${new Intl.NumberFormat("en-US").format(
                             row.nonrept_positions_long_all
@@ -319,10 +339,7 @@ const App = () => {
                     </TableCell>
 
                     {/* Non-Reportable Positions Short */}
-                    <TableCell
-                       
-                      className="custom-table-cell"
-                    >
+                    <TableCell className="custom-table-cell border-top">
                       {row?.nonrept_positions_short_all
                         ? `${new Intl.NumberFormat("en-US").format(
                             row.nonrept_positions_short_all
@@ -485,6 +502,38 @@ const App = () => {
                             row.change_in_nonrept_short_all
                           } (${row?.pct_of_oi_nonrept_short_all ?? 0}%)`
                         : ""}
+                    </TableCell>
+                  </TableRow>
+
+                  {/* Third Row: Change Values */}
+                  <TableRow className="third-row-table" >
+                    <TableCell className="custom-table-cell">
+                      {row?.traders_noncomm_long_all}
+                    </TableCell>
+                    <TableCell className="custom-table-cell">
+                      {row?.traders_noncomm_short_all}
+                    </TableCell>
+                    <TableCell className="custom-table-cell">
+                      {row?.traders_noncomm_spread_all}
+                    </TableCell>
+                    <TableCell className="custom-table-cell">
+                      {row?.traders_comm_long_all}
+                    </TableCell>
+                    <TableCell className="custom-table-cell">
+                      {row?.traders_comm_short_all}
+                    </TableCell>
+                    <TableCell className="custom-table-cell">
+                      {row?.traders_tot_rept_long_all}
+                    </TableCell>
+                    <TableCell className="custom-table-cell">
+                      {row?.traders_tot_rept_short_all}
+                    </TableCell>
+                    <TableCell
+                      colSpan={2}
+                      style={{ fontWeight: "bold" }}
+                      className="custom-table-cell"
+                    >
+                      <span>Total Traders : {row?.traders_tot_all}</span>
                     </TableCell>
                   </TableRow>
                 </React.Fragment>
