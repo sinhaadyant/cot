@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import {
   Select,
@@ -8,9 +8,11 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  CircularProgress, Typography,
-  Box
+  CircularProgress,
+  Typography,
+  Box,
 } from "@mui/material";
+import LoadingBar from "react-top-loading-bar";
 import "./App.css"; // Import the custom CSS file
 
 export const filterOptions = {
@@ -41,10 +43,12 @@ const App = () => {
   const [limit, setLimit] = useState(5);
   const [loading, setLoading] = useState(false);
   const [subCategoryOptions, setSubCategoryOptions] = useState([]);
+  const loadingBarRef = useRef(null);
 
   // Fetch data based on selected subcategory
   const fetchData = async (filter, limit) => {
     setLoading(true);
+    loadingBarRef.current.continuousStart();
     try {
       const response = await axios.get(
         `https://publicreporting.cftc.gov/resource/6dca-aqww.json?market_and_exchange_names=${encodeURIComponent(
@@ -56,6 +60,7 @@ const App = () => {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
+      loadingBarRef.current.complete();
     }
   };
 
@@ -106,74 +111,76 @@ const App = () => {
 
   return (
     <div className="app-container">
+      {/* Top Loading Bar */}
+      <LoadingBar color="#CE93D8" ref={loadingBarRef} height={6} shadow={true} />
+
       <h1>Exchange Data</h1>
 
       <div className="filter-container">
-  <div className="filter-group">
-    <label htmlFor="filter" className="filter-label">
-      Exchange:
-    </label>
-    <Select
-      value={selectedFilter}
-      onChange={handleFilterChange}
-      displayEmpty
-      style={{ width: "200px" }}
-    >
-      <MenuItem value="" disabled>
-        Select
-      </MenuItem>
-      {Object.keys(filterOptions).map((filter) => (
-        <MenuItem key={filter} value={filter}>
-          {filter.charAt(0).toUpperCase() + filter.slice(1)}
-        </MenuItem>
-      ))}
-    </Select>
-  </div>
+        <div className="filter-group">
+          <label htmlFor="filter" className="filter-label">
+            Exchange:
+          </label>
+          <Select
+            value={selectedFilter}
+            onChange={handleFilterChange}
+            displayEmpty
+            style={{ width: "200px" }}
+          >
+            <MenuItem value="" disabled>
+              Select
+            </MenuItem>
+            {Object.keys(filterOptions).map((filter) => (
+              <MenuItem key={filter} value={filter}>
+                {filter.charAt(0).toUpperCase() + filter.slice(1)}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
 
-  {selectedFilter && (
-    <div className="filter-group">
-      <label htmlFor="subCategory" className="filter-label">
-        Subcategory:
-      </label>
-      <Select
-        id="subCategory"
-        value={selectedSubCategory}
-        onChange={handleSubCategoryChange}
-        style={{ width: "250px" }}
-      >
-        <MenuItem value="">Select Subcategory</MenuItem>
-        {subCategoryOptions.map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
-          </MenuItem>
-        ))}
-      </Select>
-    </div>
-  )}
+        {selectedFilter && (
+          <div className="filter-group">
+            <label htmlFor="subCategory" className="filter-label">
+              Subcategory:
+            </label>
+            <Select
+              id="subCategory"
+              value={selectedSubCategory}
+              onChange={handleSubCategoryChange}
+              style={{ width: "250px" }}
+            >
+              <MenuItem value="">Select Subcategory</MenuItem>
+              {subCategoryOptions.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+        )}
 
-  {selectedSubCategory && (
-    <div className="filter-group">
-      <label htmlFor="limit" className="filter-label">
-        Limit:
-      </label>
-      <Select
-        id="limit"
-        value={limit}
-        onChange={handleLimitChange}
-        style={{ width: "200px" }}
-      >
-        <MenuItem value={5}>5</MenuItem>
-        <MenuItem value={10}>10</MenuItem>
-        <MenuItem value={20}>20</MenuItem>
-        <MenuItem value={50}>50</MenuItem>
-        <MenuItem value={100}>100</MenuItem>
-        <MenuItem value={200}>200</MenuItem>
-        <MenuItem value={500}>500</MenuItem>
-      </Select>
-    </div>
-  )}
-</div>
-
+        {selectedSubCategory && (
+          <div className="filter-group">
+            <label htmlFor="limit" className="filter-label">
+              Limit:
+            </label>
+            <Select
+              id="limit"
+              value={limit}
+              onChange={handleLimitChange}
+              style={{ width: "200px" }}
+            >
+              <MenuItem value={5}>5</MenuItem>
+              <MenuItem value={10}>10</MenuItem>
+              <MenuItem value={20}>20</MenuItem>
+              <MenuItem value={50}>50</MenuItem>
+              <MenuItem value={100}>100</MenuItem>
+              <MenuItem value={200}>200</MenuItem>
+              <MenuItem value={500}>500</MenuItem>
+            </Select>
+          </div>
+        )}
+      </div>
 
       {loading && <CircularProgress className="loading-spinner" />}
 
@@ -285,7 +292,6 @@ const App = () => {
         <p>No data available for the selected filter.</p>
       )}
 
-      {/* Footer */}
       <Box
         sx={{
           backgroundColor: "#f1f1f1",
