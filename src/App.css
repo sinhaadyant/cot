@@ -221,7 +221,7 @@ h1 {
 }
 
 .arrow.up {
-  color: #67bd90;
+  color: #008440;
   animation-name: moveUp;
 }
 
@@ -236,19 +236,8 @@ h1 {
 }
 
 .arrow.down {
-  color: #f18682;
+  color: #c30a04;
   animation-name: moveDown;
 }
 
-/* Additional Styling for Text */
-.positive-change {
-  display: flex;
-  align-items: center;
-  color: #67bd90;
-}
-
-.negative-change {
-  display: flex;
-  align-items: center;
-  color: #f18682;
-}
+ 

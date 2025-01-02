@@ -428,46 +428,64 @@ const App = () => {
                     {/* Second Row: Change Values */}
                     <TableRow>
                       <TableCell
-                        style={{
-                          backgroundColor:
-                            row?.change_in_noncomm_long_all > 0
-                              ? "#67bd90"
-                              : row?.change_in_noncomm_long_all < 0
-                              ? "#f18682"
-                              : "transparent",
-                        }}
-                        className="custom-table-cell"
+                       style={{
+                        backgroundColor:
+                          row?.change_in_noncomm_long_all > 0
+                            ? "#B3F1D1"
+                            : row?.change_in_noncomm_long_all < 0
+                            ? "#FFC1BF"
+                            : "transparent",
+                            fontWeight: "bold"
+                      }}
+                         className="custom-table-cell"
                       >
+                        {row.change_in_noncomm_long_all > 0 && (
+                          <span className="arrow up">▲</span>
+                        )}
                         {row?.change_in_noncomm_long_all
                           ? `${row.change_in_noncomm_long_all > 0 ? "+" : ""}${
                               row.change_in_noncomm_long_all
                             } (${row?.pct_of_oi_noncomm_long_all ?? 0}%)`
                           : ""}
+                        {row.change_in_noncomm_long_all < 0 && (
+                          <span className="arrow down">▼</span>
+                        )}
                       </TableCell>
-                      <TableCell
-                        style={{
-                          backgroundColor:
-                            row?.change_in_noncomm_short_all > 0
-                              ? "#67bd90"
-                              : row?.change_in_noncomm_short_all < 0
-                              ? "#f18682"
-                              : "transparent",
-                        }}
-                        className="custom-table-cell"
+                     
+
+
+ <TableCell
+                       style={{
+                        backgroundColor:
+                          row?.change_in_noncomm_short_all > 0
+                            ? "#B3F1D1"
+                            : row?.change_in_noncomm_short_all < 0
+                            ? "#FFC1BF"
+                            : "transparent",
+                            fontWeight: "bold"
+                      }}
+                         className="custom-table-cell"
                       >
+                        {row.change_in_noncomm_short_all > 0 && (
+                          <span className="arrow up">▲</span>
+                        )}
                         {row?.change_in_noncomm_short_all
                           ? `${row.change_in_noncomm_short_all > 0 ? "+" : ""}${
                               row.change_in_noncomm_short_all
-                            } (${row?.pct_of_oi_noncomm_short_all ?? 0}%)`
+                            } (${row?.pct_of_oi_noncomm_long_all ?? 0}%)`
                           : ""}
+                        {row.change_in_noncomm_short_all < 0 && (
+                          <span className="arrow down">▼</span>
+                        )}
                       </TableCell>
+                      
                       <TableCell
                         style={{
                           backgroundColor:
                             row?.change_in_noncomm_spead_all > 0
-                              ? "#67bd90"
+                              ? "#B3F1D1"
                               : row?.change_in_noncomm_spead_all < 0
-                              ? "#f18682"
+                              ? "#FFC1BF"
                               : "transparent",
                         }}
                         className="custom-table-cell"
@@ -484,9 +502,9 @@ const App = () => {
                             style={{
                               backgroundColor:
                                 row?.change_in_comm_long_all > 0
-                                  ? "#67bd90"
+                                  ? "#B3F1D1"
                                   : row?.change_in_comm_long_all < 0
-                                  ? "#f18682"
+                                  ? "#FFC1BF"
                                   : "transparent",
                             }}
                             className="custom-table-cell"
@@ -501,9 +519,9 @@ const App = () => {
                             style={{
                               backgroundColor:
                                 row?.change_in_comm_short_all > 0
-                                  ? "#67bd90"
+                                  ? "#B3F1D1"
                                   : row?.change_in_comm_short_all < 0
-                                  ? "#f18682"
+                                  ? "#FFC1BF"
                                   : "transparent",
                             }}
                             className="custom-table-cell"
@@ -520,9 +538,9 @@ const App = () => {
                             style={{
                               backgroundColor:
                                 row?.change_in_tot_rept_long_all > 0
-                                  ? "#67bd90"
+                                  ? "#B3F1D1"
                                   : row?.change_in_tot_rept_long_all < 0
-                                  ? "#f18682"
+                                  ? "#FFC1BF"
                                   : "transparent",
                             }}
                             className="custom-table-cell"
@@ -539,9 +557,9 @@ const App = () => {
                             style={{
                               backgroundColor:
                                 row?.change_in_tot_rept_short > 0
-                                  ? "#67bd90"
+                                  ? "#B3F1D1"
                                   : row?.change_in_tot_rept_short < 0
-                                  ? "#f18682"
+                                  ? "#FFC1BF"
                                   : "transparent",
                             }}
                             className="custom-table-cell"
@@ -558,9 +576,9 @@ const App = () => {
                             style={{
                               backgroundColor:
                                 row?.change_in_nonrept_long_all > 0
-                                  ? "#67bd90"
+                                  ? "#B3F1D1"
                                   : row?.change_in_nonrept_long_all < 0
-                                  ? "#f18682"
+                                  ? "#FFC1BF"
                                   : "transparent",
                             }}
                             className="custom-table-cell"
@@ -577,9 +595,9 @@ const App = () => {
                             style={{
                               backgroundColor:
                                 row?.change_in_nonrept_short_all > 0
-                                  ? "#67bd90"
+                                  ? "#B3F1D1"
                                   : row?.change_in_nonrept_short_all < 0
-                                  ? "#f18682"
+                                  ? "#FFC1BF"
                                   : "transparent",
                             }}
                             className="custom-table-cell"
