@@ -199,3 +199,56 @@ h1 {
   border-top: 2px solid black;
 
 }
+
+/* General Styles */
+.arrow {
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 16px;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+/* Animation for Up Arrow */
+@keyframes moveUp {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.arrow.up {
+  color: #67bd90;
+  animation-name: moveUp;
+}
+
+/* Animation for Down Arrow */
+@keyframes moveDown {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+.arrow.down {
+  color: #f18682;
+  animation-name: moveDown;
+}
+
+/* Additional Styling for Text */
+.positive-change {
+  display: flex;
+  align-items: center;
+  color: #67bd90;
+}
+
+.negative-change {
+  display: flex;
+  align-items: center;
+  color: #f18682;
+}

@@ -14,7 +14,8 @@ import {
 } from "@mui/material";
 import LoadingBar from "react-top-loading-bar";
 import "./App.css"; // Import the custom CSS file
-
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 export const filterOptions = {
   commodity: [
     "GOLD - COMMODITY EXCHANGE INC.",
@@ -70,7 +71,13 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [subCategoryOptions, setSubCategoryOptions] = useState([]);
   const loadingBarRef = useRef(null);
+  // State to track checkbox
+  const [isChecked, setIsChecked] = useState(false);
 
+  // Handler for checkbox state change
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+  };
   // Fetch data based on selected subcategory
   const fetchData = async (filter, limit) => {
     setLoading(true);
@@ -215,6 +222,19 @@ const App = () => {
             </Select>
           </div>
         )}
+
+        <div>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+                color="primary"
+              />
+            }
+            label="Show Commercial Data"
+          />
+        </div>
       </div>
 
       {loading && <CircularProgress className="loading-spinner" />}
@@ -225,319 +245,416 @@ const App = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Date</TableCell>
-                <TableCell colSpan={3}>Non-Commercial</TableCell>
-                <TableCell colSpan={2}>Commercial</TableCell>
-                <TableCell colSpan={2}>Total</TableCell>
-                <TableCell colSpan={2}>Non-Reportable</TableCell>
+                <TableCell style={{ textAlign: "center" }} colSpan={4}>
+                  Non-Commercial
+                </TableCell>
+                {isChecked && (
+                  <>
+                    <TableCell colSpan={2}>Commercial</TableCell>
+                    <TableCell colSpan={2}>Total</TableCell>
+                    <TableCell colSpan={2}>Non-Reportable</TableCell>
+                  </>
+                )}
               </TableRow>
               <TableRow>
                 <TableCell></TableCell>
+                <TableCell>Net Values</TableCell>
                 <TableCell>Long</TableCell>
                 <TableCell>Short</TableCell>
                 <TableCell>Spreads</TableCell>
-                <TableCell>Long</TableCell>
-                <TableCell>Short</TableCell>
-                <TableCell>Long</TableCell>
-                <TableCell>Short</TableCell>
-                <TableCell>Long</TableCell>
-                <TableCell>Short</TableCell>
+                {isChecked && (
+                  <>
+                    <TableCell>Long</TableCell>
+                    <TableCell>Short</TableCell>
+                    <TableCell>Long</TableCell>
+                    <TableCell>Short</TableCell>
+                    <TableCell>Long</TableCell>
+                    <TableCell>Short</TableCell>
+                  </>
+                )}
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((row, index) => (
-                <React.Fragment key={index}>
-                  {/* {index == 0 && (
-                    <TableRow style={{ backgroundColor: "#DCDCDC" }}>
-                      <TableCell colSpan={3} style={{ fontWeight: "bolder" }}>
-                        {row?.yyyy_report_week_ww}
+              {data.map((row, index) => {
+                const netPosition =
+                  row.noncomm_positions_long_all &&
+                  row?.noncomm_positions_short_all &&
+                  row.noncomm_positions_long_all -
+                    row?.noncomm_positions_short_all;
+
+                const netChange =
+                  netPosition -
+                  (row.noncomm_positions_long_all -
+                    row?.change_in_noncomm_long_all -
+                    (row.noncomm_positions_short_all -
+                      row?.change_in_noncomm_short_all));
+
+                return (
+                  <React.Fragment key={index}>
+                    {/* {index == 0 && (
+              <TableRow style={{ backgroundColor: "#DCDCDC" }}>
+                <TableCell colSpan={3} style={{ fontWeight: "bolder" }}>
+                  {row?.yyyy_report_week_ww}
+                </TableCell>
+
+                <TableCell colSpan={4} style={{ fontWeight: "bolder" }}>
+                  {row?.contract_units}
+                </TableCell>
+                <TableCell colSpan={3} style={{ fontWeight: "bolder" }}>
+                  Open Interest: {row?.open_interest_all}
+                </TableCell>
+              </TableRow>
+            )} */}
+                    {/* First Row: Data */}
+                    <TableRow>
+                      {/* Date for Each Record */}
+
+                      <TableCell
+                        rowSpan={3}
+                        className="custom-table-cell date-cell"
+                      >
+                        {row?.report_date_as_yyyy_mm_dd
+                          ? new Date(
+                              row.report_date_as_yyyy_mm_dd
+                            ).toLocaleDateString("en-CA")
+                          : ""}
                       </TableCell>
 
-                      <TableCell colSpan={4} style={{ fontWeight: "bolder" }}>
-                        {row?.contract_units}
+                      {/* Data Values */}
+                      <TableCell
+                        rowSpan={2}
+                        style={{ fontWeight: "bold", fontSize: "16px" }}
+                        className="custom-table-cell border-top"
+                      >
+                        {netPosition && "Position :  "}
+                        <hr />
+                        {netPosition > 0 && (
+                          <div className="positive-change">
+                            <span className="arrow up">▲</span>
+                            {netPosition
+                              ? `${new Intl.NumberFormat("en-US").format(
+                                  netPosition
+                                )}`
+                              : ""}
+                          </div>
+                        )}
+                        {netPosition < 0 && (
+                          <div className="negative-change">
+                            <span className="arrow down">▼</span>
+                            {netPosition
+                              ? `${new Intl.NumberFormat("en-US").format(
+                                  netPosition
+                                )}`
+                              : ""}
+                          </div>
+                        )}
                       </TableCell>
-                      <TableCell colSpan={3} style={{ fontWeight: "bolder" }}>
-                        Open Interest: {row?.open_interest_all}
+                      <TableCell className="custom-table-cell border-top">
+                        {row?.noncomm_positions_long_all
+                          ? new Intl.NumberFormat("en-US").format(
+                              row.noncomm_positions_long_all
+                            )
+                          : ""}
                       </TableCell>
+                      <TableCell className="custom-table-cell border-top">
+                        {row?.noncomm_positions_short_all
+                          ? new Intl.NumberFormat("en-US").format(
+                              row.noncomm_positions_short_all
+                            )
+                          : ""}
+                      </TableCell>
+                      <TableCell className="custom-table-cell border-top">
+                        {row?.noncomm_postions_spread_all
+                          ? new Intl.NumberFormat("en-US").format(
+                              row.noncomm_postions_spread_all
+                            )
+                          : ""}
+                      </TableCell>
+                      {isChecked && (
+                        <>
+                          <TableCell className="custom-table-cell border-top">
+                            {row?.comm_positions_long_all
+                              ? new Intl.NumberFormat("en-US").format(
+                                  row.comm_positions_long_all
+                                )
+                              : ""}
+                          </TableCell>
+                          <TableCell className="custom-table-cell border-top">
+                            {row?.comm_positions_short_all
+                              ? new Intl.NumberFormat("en-US").format(
+                                  row.comm_positions_short_all
+                                )
+                              : ""}
+                          </TableCell>
+                          {/* Total Reportable Positions Long */}
+                          <TableCell className="custom-table-cell border-top">
+                            {row?.tot_rept_positions_long_all
+                              ? `${new Intl.NumberFormat("en-US").format(
+                                  row.tot_rept_positions_long_all
+                                )}  `
+                              : ""}
+                          </TableCell>
+
+                          {/* Total Reportable Positions Short */}
+                          <TableCell className="custom-table-cell border-top">
+                            {row?.tot_rept_positions_short
+                              ? `${new Intl.NumberFormat("en-US").format(
+                                  row.tot_rept_positions_short
+                                )}  `
+                              : ""}
+                          </TableCell>
+
+                          {/* Non-Reportable Positions Long */}
+                          <TableCell className="custom-table-cell border-top">
+                            {row?.nonrept_positions_long_all
+                              ? `${new Intl.NumberFormat("en-US").format(
+                                  row.nonrept_positions_long_all
+                                )} `
+                              : ""}
+                          </TableCell>
+
+                          {/* Non-Reportable Positions Short */}
+                          <TableCell className="custom-table-cell border-top">
+                            {row?.nonrept_positions_short_all
+                              ? `${new Intl.NumberFormat("en-US").format(
+                                  row.nonrept_positions_short_all
+                                )}  `
+                              : ""}
+                          </TableCell>
+                        </>
+                      )}
                     </TableRow>
-                  )} */}
-                  {/* First Row: Data */}
-                  <TableRow>
-                    {/* Date for Each Record */}
 
-                    <TableCell
-                      rowSpan={3}
-                      className="custom-table-cell date-cell"
-                    >
-                      {row?.report_date_as_yyyy_mm_dd
-                        ? new Date(
-                            row.report_date_as_yyyy_mm_dd
-                          ).toLocaleDateString("en-CA")
-                        : ""}
-                    </TableCell>
+                    {/* Second Row: Change Values */}
+                    <TableRow>
+                      <TableCell
+                        style={{
+                          backgroundColor:
+                            row?.change_in_noncomm_long_all > 0
+                              ? "#67bd90"
+                              : row?.change_in_noncomm_long_all < 0
+                              ? "#f18682"
+                              : "transparent",
+                        }}
+                        className="custom-table-cell"
+                      >
+                        {row?.change_in_noncomm_long_all
+                          ? `${row.change_in_noncomm_long_all > 0 ? "+" : ""}${
+                              row.change_in_noncomm_long_all
+                            } (${row?.pct_of_oi_noncomm_long_all ?? 0}%)`
+                          : ""}
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          backgroundColor:
+                            row?.change_in_noncomm_short_all > 0
+                              ? "#67bd90"
+                              : row?.change_in_noncomm_short_all < 0
+                              ? "#f18682"
+                              : "transparent",
+                        }}
+                        className="custom-table-cell"
+                      >
+                        {row?.change_in_noncomm_short_all
+                          ? `${row.change_in_noncomm_short_all > 0 ? "+" : ""}${
+                              row.change_in_noncomm_short_all
+                            } (${row?.pct_of_oi_noncomm_short_all ?? 0}%)`
+                          : ""}
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          backgroundColor:
+                            row?.change_in_noncomm_spead_all > 0
+                              ? "#67bd90"
+                              : row?.change_in_noncomm_spead_all < 0
+                              ? "#f18682"
+                              : "transparent",
+                        }}
+                        className="custom-table-cell"
+                      >
+                        {row?.change_in_noncomm_spead_all
+                          ? `${row.change_in_noncomm_spead_all > 0 ? "+" : ""}${
+                              row.change_in_noncomm_spead_all
+                            } (${row?.pct_of_oi_noncomm_spread ?? 0}%)`
+                          : ""}
+                      </TableCell>
+                      {isChecked && (
+                        <>
+                          <TableCell
+                            style={{
+                              backgroundColor:
+                                row?.change_in_comm_long_all > 0
+                                  ? "#67bd90"
+                                  : row?.change_in_comm_long_all < 0
+                                  ? "#f18682"
+                                  : "transparent",
+                            }}
+                            className="custom-table-cell"
+                          >
+                            {row?.change_in_comm_long_all
+                              ? `${row.change_in_comm_long_all > 0 ? "+" : ""}${
+                                  row.change_in_comm_long_all
+                                } (${row?.pct_of_oi_comm_long_all ?? 0}%)`
+                              : ""}
+                          </TableCell>
+                          <TableCell
+                            style={{
+                              backgroundColor:
+                                row?.change_in_comm_short_all > 0
+                                  ? "#67bd90"
+                                  : row?.change_in_comm_short_all < 0
+                                  ? "#f18682"
+                                  : "transparent",
+                            }}
+                            className="custom-table-cell"
+                          >
+                            {row?.change_in_comm_short_all
+                              ? `${
+                                  row.change_in_comm_short_all > 0 ? "+" : ""
+                                }${row.change_in_comm_short_all} (${
+                                  row?.pct_of_oi_comm_short_all ?? 0
+                                }%)`
+                              : ""}
+                          </TableCell>
+                          <TableCell
+                            style={{
+                              backgroundColor:
+                                row?.change_in_tot_rept_long_all > 0
+                                  ? "#67bd90"
+                                  : row?.change_in_tot_rept_long_all < 0
+                                  ? "#f18682"
+                                  : "transparent",
+                            }}
+                            className="custom-table-cell"
+                          >
+                            {row?.change_in_tot_rept_long_all
+                              ? `${
+                                  row.change_in_tot_rept_long_all > 0 ? "+" : ""
+                                }${row.change_in_tot_rept_long_all} (${
+                                  row?.pct_of_oi_tot_rept_long_all ?? 0
+                                }%)`
+                              : ""}
+                          </TableCell>
+                          <TableCell
+                            style={{
+                              backgroundColor:
+                                row?.change_in_tot_rept_short > 0
+                                  ? "#67bd90"
+                                  : row?.change_in_tot_rept_short < 0
+                                  ? "#f18682"
+                                  : "transparent",
+                            }}
+                            className="custom-table-cell"
+                          >
+                            {row?.change_in_tot_rept_short
+                              ? `${
+                                  row.change_in_tot_rept_short > 0 ? "+" : ""
+                                }${row.change_in_tot_rept_short} (${
+                                  row?.pct_of_oi_tot_rept_short ?? 0
+                                }%)`
+                              : ""}
+                          </TableCell>
+                          <TableCell
+                            style={{
+                              backgroundColor:
+                                row?.change_in_nonrept_long_all > 0
+                                  ? "#67bd90"
+                                  : row?.change_in_nonrept_long_all < 0
+                                  ? "#f18682"
+                                  : "transparent",
+                            }}
+                            className="custom-table-cell"
+                          >
+                            {row?.change_in_nonrept_long_all
+                              ? `${
+                                  row.change_in_nonrept_long_all > 0 ? "+" : ""
+                                }${row.change_in_nonrept_long_all} (${
+                                  row?.pct_of_oi_nonrept_long_all ?? 0
+                                }%)`
+                              : ""}
+                          </TableCell>
+                          <TableCell
+                            style={{
+                              backgroundColor:
+                                row?.change_in_nonrept_short_all > 0
+                                  ? "#67bd90"
+                                  : row?.change_in_nonrept_short_all < 0
+                                  ? "#f18682"
+                                  : "transparent",
+                            }}
+                            className="custom-table-cell"
+                          >
+                            {row?.change_in_nonrept_short_all
+                              ? `${
+                                  row.change_in_nonrept_short_all > 0 ? "+" : ""
+                                }${row.change_in_nonrept_short_all} (${
+                                  row?.pct_of_oi_nonrept_short_all ?? 0
+                                }%)`
+                              : ""}
+                          </TableCell>
+                        </>
+                      )}
+                    </TableRow>
 
-                    {/* Data Values */}
-                    <TableCell className="custom-table-cell border-top">
-                      {row?.noncomm_positions_long_all
-                        ? new Intl.NumberFormat("en-US").format(
-                            row.noncomm_positions_long_all
-                          )
-                        : ""}
-                    </TableCell>
-                    <TableCell className="custom-table-cell border-top">
-                      {row?.noncomm_positions_short_all
-                        ? new Intl.NumberFormat("en-US").format(
-                            row.noncomm_positions_short_all
-                          )
-                        : ""}
-                    </TableCell>
-                    <TableCell className="custom-table-cell border-top">
-                      {row?.noncomm_postions_spread_all
-                        ? new Intl.NumberFormat("en-US").format(
-                            row.noncomm_postions_spread_all
-                          )
-                        : ""}
-                    </TableCell>
-                    <TableCell className="custom-table-cell border-top">
-                      {row?.comm_positions_long_all
-                        ? new Intl.NumberFormat("en-US").format(
-                            row.comm_positions_long_all
-                          )
-                        : ""}
-                    </TableCell>
-                    <TableCell className="custom-table-cell border-top">
-                      {row?.comm_positions_short_all
-                        ? new Intl.NumberFormat("en-US").format(
-                            row.comm_positions_short_all
-                          )
-                        : ""}
-                    </TableCell>
-                    {/* Total Reportable Positions Long */}
-                    <TableCell className="custom-table-cell border-top">
-                      {row?.tot_rept_positions_long_all
-                        ? `${new Intl.NumberFormat("en-US").format(
-                            row.tot_rept_positions_long_all
-                          )}  `
-                        : ""}
-                    </TableCell>
-
-                    {/* Total Reportable Positions Short */}
-                    <TableCell className="custom-table-cell border-top">
-                      {row?.tot_rept_positions_short
-                        ? `${new Intl.NumberFormat("en-US").format(
-                            row.tot_rept_positions_short
-                          )}  `
-                        : ""}
-                    </TableCell>
-
-                    {/* Non-Reportable Positions Long */}
-                    <TableCell className="custom-table-cell border-top">
-                      {row?.nonrept_positions_long_all
-                        ? `${new Intl.NumberFormat("en-US").format(
-                            row.nonrept_positions_long_all
-                          )} `
-                        : ""}
-                    </TableCell>
-
-                    {/* Non-Reportable Positions Short */}
-                    <TableCell className="custom-table-cell border-top">
-                      {row?.nonrept_positions_short_all
-                        ? `${new Intl.NumberFormat("en-US").format(
-                            row.nonrept_positions_short_all
-                          )}  `
-                        : ""}
-                    </TableCell>
-                  </TableRow>
-
-                  {/* Second Row: Change Values */}
-                  <TableRow>
-                    <TableCell
-                      style={{
-                        backgroundColor:
-                          row?.change_in_noncomm_long_all > 0
-                            ? "#67bd90"
-                            : row?.change_in_noncomm_long_all < 0
-                            ? "#f18682"
-                            : "transparent",
-                      }}
-                      className="custom-table-cell"
-                    >
-                      {row?.change_in_noncomm_long_all
-                        ? `${row.change_in_noncomm_long_all > 0 ? "+" : ""}${
-                            row.change_in_noncomm_long_all
-                          } (${row?.pct_of_oi_noncomm_long_all ?? 0}%)`
-                        : ""}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        backgroundColor:
-                          row?.change_in_noncomm_short_all > 0
-                            ? "#67bd90"
-                            : row?.change_in_noncomm_short_all < 0
-                            ? "#f18682"
-                            : "transparent",
-                      }}
-                      className="custom-table-cell"
-                    >
-                      {row?.change_in_noncomm_short_all
-                        ? `${row.change_in_noncomm_short_all > 0 ? "+" : ""}${
-                            row.change_in_noncomm_short_all
-                          } (${row?.pct_of_oi_noncomm_short_all ?? 0}%)`
-                        : ""}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        backgroundColor:
-                          row?.change_in_noncomm_spead_all > 0
-                            ? "#67bd90"
-                            : row?.change_in_noncomm_spead_all < 0
-                            ? "#f18682"
-                            : "transparent",
-                      }}
-                      className="custom-table-cell"
-                    >
-                      {row?.change_in_noncomm_spead_all
-                        ? `${row.change_in_noncomm_spead_all > 0 ? "+" : ""}${
-                            row.change_in_noncomm_spead_all
-                          } (${row?.pct_of_oi_noncomm_spread ?? 0}%)`
-                        : ""}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        backgroundColor:
-                          row?.change_in_comm_long_all > 0
-                            ? "#67bd90"
-                            : row?.change_in_comm_long_all < 0
-                            ? "#f18682"
-                            : "transparent",
-                      }}
-                      className="custom-table-cell"
-                    >
-                      {row?.change_in_comm_long_all
-                        ? `${row.change_in_comm_long_all > 0 ? "+" : ""}${
-                            row.change_in_comm_long_all
-                          } (${row?.pct_of_oi_comm_long_all ?? 0}%)`
-                        : ""}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        backgroundColor:
-                          row?.change_in_comm_short_all > 0
-                            ? "#67bd90"
-                            : row?.change_in_comm_short_all < 0
-                            ? "#f18682"
-                            : "transparent",
-                      }}
-                      className="custom-table-cell"
-                    >
-                      {row?.change_in_comm_short_all
-                        ? `${row.change_in_comm_short_all > 0 ? "+" : ""}${
-                            row.change_in_comm_short_all
-                          } (${row?.pct_of_oi_comm_short_all ?? 0}%)`
-                        : ""}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        backgroundColor:
-                          row?.change_in_tot_rept_long_all > 0
-                            ? "#67bd90"
-                            : row?.change_in_tot_rept_long_all < 0
-                            ? "#f18682"
-                            : "transparent",
-                      }}
-                      className="custom-table-cell"
-                    >
-                      {row?.change_in_tot_rept_long_all
-                        ? `${row.change_in_tot_rept_long_all > 0 ? "+" : ""}${
-                            row.change_in_tot_rept_long_all
-                          } (${row?.pct_of_oi_tot_rept_long_all ?? 0}%)`
-                        : ""}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        backgroundColor:
-                          row?.change_in_tot_rept_short > 0
-                            ? "#67bd90"
-                            : row?.change_in_tot_rept_short < 0
-                            ? "#f18682"
-                            : "transparent",
-                      }}
-                      className="custom-table-cell"
-                    >
-                      {row?.change_in_tot_rept_short
-                        ? `${row.change_in_tot_rept_short > 0 ? "+" : ""}${
-                            row.change_in_tot_rept_short
-                          } (${row?.pct_of_oi_tot_rept_short ?? 0}%)`
-                        : ""}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        backgroundColor:
-                          row?.change_in_nonrept_long_all > 0
-                            ? "#67bd90"
-                            : row?.change_in_nonrept_long_all < 0
-                            ? "#f18682"
-                            : "transparent",
-                      }}
-                      className="custom-table-cell"
-                    >
-                      {row?.change_in_nonrept_long_all
-                        ? `${row.change_in_nonrept_long_all > 0 ? "+" : ""}${
-                            row.change_in_nonrept_long_all
-                          } (${row?.pct_of_oi_nonrept_long_all ?? 0}%)`
-                        : ""}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        backgroundColor:
-                          row?.change_in_nonrept_short_all > 0
-                            ? "#67bd90"
-                            : row?.change_in_nonrept_short_all < 0
-                            ? "#f18682"
-                            : "transparent",
-                      }}
-                      className="custom-table-cell"
-                    >
-                      {row?.change_in_nonrept_short_all
-                        ? `${row.change_in_nonrept_short_all > 0 ? "+" : ""}${
-                            row.change_in_nonrept_short_all
-                          } (${row?.pct_of_oi_nonrept_short_all ?? 0}%)`
-                        : ""}
-                    </TableCell>
-                  </TableRow>
-
-                  {/* Third Row: Change Values */}
-                  <TableRow className="third-row-table" >
-                    <TableCell className="custom-table-cell">
-                      {row?.traders_noncomm_long_all}
-                    </TableCell>
-                    <TableCell className="custom-table-cell">
-                      {row?.traders_noncomm_short_all}
-                    </TableCell>
-                    <TableCell className="custom-table-cell">
-                      {row?.traders_noncomm_spread_all}
-                    </TableCell>
-                    <TableCell className="custom-table-cell">
-                      {row?.traders_comm_long_all}
-                    </TableCell>
-                    <TableCell className="custom-table-cell">
-                      {row?.traders_comm_short_all}
-                    </TableCell>
-                    <TableCell className="custom-table-cell">
-                      {row?.traders_tot_rept_long_all}
-                    </TableCell>
-                    <TableCell className="custom-table-cell">
-                      {row?.traders_tot_rept_short_all}
-                    </TableCell>
-                    <TableCell
-                      colSpan={2}
-                      style={{ fontWeight: "bold" }}
-                      className="custom-table-cell"
-                    >
-                      <span>Total Traders : {row?.traders_tot_all}</span>
-                    </TableCell>
-                  </TableRow>
-                </React.Fragment>
-              ))}
+                    {/* Third Row: Change Values */}
+                    <TableRow className="third-row-table">
+                      <TableCell
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: "15px",
+                        }}
+                        className="custom-table-cell"
+                      >
+                        {netChange && "Change : "}
+                        {netChange > 0 && (
+                          <div className="positive-change">
+                            <span className="arrow up">▲</span>
+                            {new Intl.NumberFormat("en-US").format(netChange)}
+                          </div>
+                        )}
+                        {netChange < 0 && (
+                          <div className="negative-change">
+                            <span className="arrow down">▼</span>
+                            {new Intl.NumberFormat("en-US").format(netChange)}
+                          </div>
+                        )}
+                      </TableCell>
+                      <TableCell className="custom-table-cell">
+                        {row?.traders_noncomm_long_all}
+                      </TableCell>
+                      <TableCell className="custom-table-cell">
+                        {row?.traders_noncomm_short_all}
+                      </TableCell>
+                      <TableCell className="custom-table-cell">
+                        {row?.traders_noncomm_spread_all}
+                      </TableCell>
+                      {isChecked && (
+                        <>
+                          <TableCell className="custom-table-cell">
+                            {row?.traders_comm_long_all}
+                          </TableCell>
+                          <TableCell className="custom-table-cell">
+                            {row?.traders_comm_short_all}
+                          </TableCell>
+                          <TableCell className="custom-table-cell">
+                            {row?.traders_tot_rept_long_all}
+                          </TableCell>
+                          <TableCell className="custom-table-cell">
+                            {row?.traders_tot_rept_short_all}
+                          </TableCell>
+                          <TableCell
+                            colSpan={2}
+                            style={{ fontWeight: "bold" }}
+                            className="custom-table-cell"
+                          >
+                            <span>Total Traders : {row?.traders_tot_all}</span>
+                          </TableCell>
+                        </>
+                      )}
+                    </TableRow>
+                  </React.Fragment>
+                );
+              })}
             </TableBody>
           </Table>
         </>
